@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import authService from "../../service/auth";
+import authService from "../../services/auth";
 import { useDispatch } from "react-redux";
 import {
   loginUserFailure,
@@ -23,8 +23,8 @@ import { setSnack } from "../../reducers/snackbarReducer";
 import "./style.css";
 
 const Schema = Yup.object().shape({
-  key: Yup.string().required("Key is required"),
-  secret: Yup.string().required("Secret is required"),
+  password: Yup.string().required("Password is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
 });
 
 function TabPanel(props) {
@@ -61,16 +61,10 @@ function TabPanel(props) {
 const SignIn = () => {
   const dispatch = useDispatch();
   const [showKey, setShowKey] = useState(false);
-  const [showSecret, setShowSecret] = useState(false);
 
   const handleClickShowKey = () => setShowKey((show) => !show);
 
   const handleMouseDownKey = (event) => {
-    event.preventDefault();
-  };
-  const handleClickShowSecret = () => setShowSecret((show) => !show);
-
-  const handleMouseDownSecret = (event) => {
     event.preventDefault();
   };
 
@@ -78,20 +72,21 @@ const SignIn = () => {
     <TabPanel value={0} index={0}>
       <Formik
         initialValues={{
-          name: "",
+          password: "",
           email: "",
-          key: "",
-          secret: "",
         }}
         enableReinitialize
         validationSchema={Schema}
         onSubmit={async (values) => {
           dispatch(loginUserStart(true));
           authService
-            .getUser({ url: "myself", method: "GET", body: values })
+            .loginUser("login", {
+              user_email: values.email,
+              user_password: values.password,
+            })
             .then((a) => {
               dispatch(loginUserFailure(false));
-              if (a?.isOk) {
+              if (a?.msg) {
                 dispatch(setSnack({ title: "Signed in", color: "success" }));
               } else {
                 dispatch(
@@ -103,7 +98,7 @@ const SignIn = () => {
               }
               return a;
             })
-            .then((a) => a?.data && dispatch(loginUserSuccess(a.data)));
+            .then((a) => dispatch(loginUserSuccess(a)));
         }}
       >
         {({ isSubmitting, values, handleChange, handleBlur, handleSubmit }) => (
@@ -112,13 +107,34 @@ const SignIn = () => {
               <Box>
                 <FormControl sx={{ width: "25ch" }} variant="outlined">
                   <InputLabel htmlFor="outlined-adornment-password">
-                    Key
+                    Email
+                  </InputLabel>
+                  <OutlinedInput
+                    id="outlined-adornment-password"
+                    type="email"
+                    name="email"
+                    value={values.email}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    label="Email"
+                  />
+                </FormControl>
+                <ErrorMessage
+                  name="email"
+                  component="div"
+                  className="errorMessage"
+                />
+              </Box>
+              <Box>
+                <FormControl sx={{ width: "25ch" }} variant="outlined">
+                  <InputLabel htmlFor="outlined-adornment-password">
+                    Password
                   </InputLabel>
                   <OutlinedInput
                     // id="outlined-adornment-password"
                     type={showKey ? "text" : "password"}
-                    name="key"
-                    value={values.key}
+                    name="password"
+                    value={values.password}
                     onBlur={handleBlur}
                     onChange={handleChange}
                     endAdornment={
@@ -133,44 +149,11 @@ const SignIn = () => {
                         </IconButton>
                       </InputAdornment>
                     }
-                    label="Key"
+                    label="Password"
                   />
                 </FormControl>
                 <ErrorMessage
-                  name="key"
-                  component="div"
-                  className="errorMessage"
-                />
-              </Box>
-              <Box>
-                <FormControl sx={{ width: "25ch" }} variant="outlined">
-                  <InputLabel htmlFor="outlined-adornment-password">
-                    Secret
-                  </InputLabel>
-                  <OutlinedInput
-                    // id="outlined-adornment-password"
-                    type={showSecret ? "text" : "password"}
-                    name="secret"
-                    value={values.secret}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowSecret}
-                          onMouseDown={handleMouseDownSecret}
-                          edge="end"
-                        >
-                          {showSecret ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label="Secret"
-                  />
-                </FormControl>
-                <ErrorMessage
-                  name="secret"
+                  name="password"
                   component="div"
                   className="errorMessage"
                 />

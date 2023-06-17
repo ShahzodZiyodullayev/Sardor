@@ -1,6 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import models from "../reducers/models";
 import carDetail from "../reducers/carDetail";
+import userReducer from "../reducers/userReducer";
+import snackbarReducer from "../reducers/snackbarReducer";
 // import userReducer from "../reducers/userReducer";
 // import booksReducer from "../reducers/booksReducer";
 // import snackbarReducer from "../reducers/snackbarReducer";
@@ -13,6 +15,8 @@ export default configureStore({
     models: models.models,
     modelsList: models.modelsList,
     carDetail,
+    auth: userReducer,
+    snackbar: snackbarReducer,
   },
   devTools: process.env.NODE_ENV !== "production",
 });

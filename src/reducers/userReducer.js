@@ -1,11 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-const userString = localStorage.getItem("user");
+import axios from "axios";
 
 const initialState = {
   isLoading: false,
   loggedIn: true,
-  user: userString ? JSON.parse(userString) : null,
 };
 
 const authReducer = createSlice({
@@ -17,8 +15,11 @@ const authReducer = createSlice({
     },
     loginUserSuccess: (state, { payload }) => {
       state.isLoading = false;
-      localStorage.setItem("user", JSON.stringify(payload));
-      const userString = localStorage.getItem("user");
+      // localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("accessToken", JSON.stringify(payload.token));
+      axios.defaults.headers.common.Authorization = `Bearer ${payload.token}`;
+
+      const userString = localStorage.getItem("accessToken");
       state.user = userString ? JSON.parse(userString) : null;
     },
     loginUserFailure: (state, { payload }) => {
@@ -26,7 +27,9 @@ const authReducer = createSlice({
     },
     loginUserOut: (state) => {
       state.loggedIn = false;
-      localStorage.removeItem("user");
+
+      localStorage.removeItem("accessToken");
+      delete axios.defaults.headers.common.Authorization;
     },
     signUserUp: (state, { payload }) => {
       state.isLoading = false;

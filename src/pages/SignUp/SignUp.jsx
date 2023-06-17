@@ -18,7 +18,7 @@ import {
   loginUserStart,
   signUserUp,
 } from "../../reducers/userReducer";
-import authService from "../../service/auth";
+import authService from "../../services/auth";
 import { setSnack } from "../../reducers/snackbarReducer";
 import "./style.css";
 

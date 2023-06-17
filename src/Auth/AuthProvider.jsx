@@ -3,16 +3,42 @@ import Loader from "../components/Loader";
 import { useSelector, useDispatch } from "react-redux";
 import { isUserLoggedIn } from "../reducers/userReducer";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import jwtDecode from "jwt-decode";
 
 const AuthProvider = ({ children }) => {
   const { isLoading, user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const isValidToken = (accessToken) => {
+    if (!accessToken) {
+      return false;
+    }
+
+    const decodedToken = jwtDecode(accessToken);
+    const currentTime = Date.now() / 1000;
+    // return true;
+    return decodedToken.exp > currentTime;
+  };
+
+  const setSession = (accessToken) => {
+    if (accessToken) {
+      localStorage.setItem("accessToken", accessToken);
+      axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+    } else {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("user");
+      delete axios.defaults.headers.common.Authorization;
+    }
+  };
+
   useEffect(() => {
     (async () => {
       try {
-        if (user) {
+        const accessToken = localStorage.getItem("accessToken");
+
+        if (accessToken && isValidToken(accessToken)) {
           dispatch(isUserLoggedIn(true));
           navigate("/");
         } else {

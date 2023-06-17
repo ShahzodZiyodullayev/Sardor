@@ -12,4 +12,13 @@ const carDetailBaseURL = axios.create({
   baseURL: "http://localhost:4000/",
 });
 
-export default { modelsBaseURL, modelsListBaseURL, carDetailBaseURL };
+const userLoginBaseURL = axios.create({
+  baseURL: "http://localhost:4000/auth/",
+});
+
+export default {
+  modelsBaseURL,
+  modelsListBaseURL,
+  carDetailBaseURL,
+  userLoginBaseURL,
+};
