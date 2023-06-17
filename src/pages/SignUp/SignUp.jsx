@@ -85,7 +85,6 @@ const SignUp = () => {
         enableReinitialize
         validationSchema={Schema}
         onSubmit={async (values) => {
-          console.log(values);
           dispatch(loginUserStart(true));
           authService
             .createNewUser("register", {

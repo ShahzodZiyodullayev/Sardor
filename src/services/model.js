@@ -16,7 +16,6 @@ const ModelsService = {
   },
   async getSubModels(route) {
     const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-    console.log(accessToken);
     const data = await axios.modelsListBaseURL
       .get(route, {
         headers: {

@@ -75,7 +75,6 @@ const ModelList = () => {
       })
       .then((response) => {
         // Car created successfully
-        console.log(response.data);
         setDialogOpen(false);
       })
       .catch((error) => {
