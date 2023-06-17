@@ -12,10 +12,7 @@ const SubModels = Loadable(lazy(() => import("../pages/SubModels/SubModels")));
 const ModelsDetail = Loadable(
   lazy(() => import("../pages/ModelsDetail/ModelsDetail")),
 );
-// const MyBooks = Loadable(lazy(() => import("../pages/Home/MyBooks")));
-// const SearchBook = Loadable(
-//   lazy(() => import("../pages/SearchBook/SearchBook")),
-// );
+const Admin = Loadable(lazy(() => import("../pages/Admin/Admin")));
 const SignIn = Loadable(lazy(() => import("../pages/SignIn/SignIn")));
 const SignUp = Loadable(lazy(() => import("../pages/SignUp/SignUp")));
 
@@ -30,6 +27,7 @@ const MainRoutes = [
       { path: "/", element: <Models /> },
       { path: "/models/:subModels", element: <SubModels /> },
       { path: "/models/modelsDetail/:detailId", element: <ModelsDetail /> },
+      { path: "/admin", element: <Admin /> },
     ],
   },
   {
