@@ -22,17 +22,6 @@ const AuthProvider = ({ children }) => {
     return decodedToken.exp > currentTime;
   };
 
-  const setSession = (accessToken) => {
-    if (accessToken) {
-      localStorage.setItem("accessToken", accessToken);
-      axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-    } else {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("user");
-      delete axios.defaults.headers.common.Authorization;
-    }
-  };
-
   useEffect(() => {
     (async () => {
       try {
@@ -40,7 +29,7 @@ const AuthProvider = ({ children }) => {
 
         if (accessToken && isValidToken(accessToken)) {
           dispatch(isUserLoggedIn(true));
-          navigate("/");
+          // navigate("/");
         } else {
           dispatch(isUserLoggedIn(false));
         }

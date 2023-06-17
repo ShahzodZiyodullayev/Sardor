@@ -23,6 +23,7 @@ import {
 import authService from "../../services/auth";
 import { setSnack } from "../../reducers/snackbarReducer";
 import "./style.css";
+import { useNavigate } from "react-router-dom";
 
 const Schema = Yup.object().shape({
   username: Yup.string().required("Name is required"),
@@ -62,6 +63,7 @@ function TabPanel(props) {
 }
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showSecret, setShowSecret] = useState(false);
 
@@ -106,7 +108,10 @@ const SignUp = () => {
               }
               return a;
             })
-            .then((a) => dispatch(signUserUp(a)));
+            .then((a) => {
+              dispatch(signUserUp(a));
+              navigate("/");
+            });
         }}
       >
         {({ isSubmitting, values, handleChange, handleBlur, handleSubmit }) => (

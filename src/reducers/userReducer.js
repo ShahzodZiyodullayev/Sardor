@@ -33,9 +33,6 @@ const authReducer = createSlice({
     },
     signUserUp: (state, { payload }) => {
       state.isLoading = false;
-      localStorage.setItem("user", JSON.stringify(payload));
-      const userString = localStorage.getItem("user");
-      state.user = userString ? JSON.parse(userString) : null;
     },
     isUserLoggedIn: (state, { payload }) => {
       state.loggedIn = payload;
