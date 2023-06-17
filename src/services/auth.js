@@ -14,10 +14,15 @@ const authService = {
       return error;
     }
   },
-  async createNewUser(axiosConfig) {
+  async createNewUser(route, datas) {
     try {
-      const response = await axios(axiosConfig);
-      return response?.data;
+      const data = await axios.userLoginBaseURL
+        .post(route, {
+          ...datas,
+        })
+        .then((a) => a?.data);
+
+      return data;
     } catch (error) {
       return error;
     }

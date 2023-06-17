@@ -25,10 +25,9 @@ import { setSnack } from "../../reducers/snackbarReducer";
 import "./style.css";
 
 const Schema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  key: Yup.string().required("Key is required"),
-  secret: Yup.string().required("Secret is required"),
+  username: Yup.string().required("Name is required"),
+  user_email: Yup.string().email("Invalid email").required("Email is required"),
+  user_password: Yup.string().required("Secret is required"),
 });
 
 function TabPanel(props) {
@@ -64,14 +63,8 @@ function TabPanel(props) {
 
 const SignUp = () => {
   const dispatch = useDispatch();
-  const [showKey, setShowKey] = useState(false);
   const [showSecret, setShowSecret] = useState(false);
 
-  const handleClickShowKey = () => setShowKey((show) => !show);
-
-  const handleMouseDownKey = (event) => {
-    event.preventDefault();
-  };
   const handleClickShowSecret = () => setShowSecret((show) => !show);
 
   const handleMouseDownSecret = (event) => {
@@ -90,16 +83,18 @@ const SignUp = () => {
         enableReinitialize
         validationSchema={Schema}
         onSubmit={async (values) => {
+          console.log(values);
           dispatch(loginUserStart(true));
           authService
-            .createNewUser({
-              url: "signup",
-              method: "POST",
-              data: values,
+            .createNewUser("register", {
+              username: values.username,
+              user_email: values.user_email,
+              user_role: values.user_role,
+              user_password: values.user_password,
             })
             .then((a) => {
               dispatch(loginUserFailure(false));
-              if (a?.isOk) {
+              if (a?.msg) {
                 dispatch(setSnack({ title: "Signed up", color: "success" }));
               } else {
                 dispatch(
@@ -111,7 +106,7 @@ const SignUp = () => {
               }
               return a;
             })
-            .then((a) => dispatch(signUserUp(a.data)));
+            .then((a) => dispatch(signUserUp(a)));
         }}
       >
         {({ isSubmitting, values, handleChange, handleBlur, handleSubmit }) => (
