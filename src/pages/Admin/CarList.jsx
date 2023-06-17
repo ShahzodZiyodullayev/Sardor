@@ -68,7 +68,7 @@ const ModelList = () => {
     };
 
     axios
-      .post("http://localhost:4000/car/create", newCar, {
+      .post("http://localhost:4000/car/admin/create", newCar, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -88,7 +88,7 @@ const ModelList = () => {
     const token = JSON.parse(localStorage.getItem("accessToken"));
 
     axios
-      .delete(`http://localhost:4000/car/delete/${carId}`, {
+      .delete(`http://localhost:4000/car/admin/delete/${carId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
