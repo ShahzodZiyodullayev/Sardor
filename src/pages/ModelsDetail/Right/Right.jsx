@@ -24,7 +24,9 @@ const Right = () => {
     <Grid2 md={9} xs={12}>
       <Card sx={{ boxShadow: "none" }}>
         <CardContent>
-          <Typography variant="h5">{carDetail[0]?.name}</Typography>
+          <Typography variant="h5">
+            {carDetail && carDetail[0] && carDetail[0]?.name}
+          </Typography>
         </CardContent>
         <CardMedia
           component="img"

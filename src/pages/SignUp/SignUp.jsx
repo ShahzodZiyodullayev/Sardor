@@ -6,7 +6,9 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
+  MenuItem,
   OutlinedInput,
+  Select,
   Stack,
 } from "@mui/material";
 import { useState } from "react";
@@ -80,10 +82,10 @@ const SignUp = () => {
     <TabPanel value={1} index={1}>
       <Formik
         initialValues={{
-          name: "",
-          email: "",
-          key: "",
-          secret: "",
+          username: "",
+          user_email: "",
+          user_role: "",
+          user_password: "",
         }}
         enableReinitialize
         validationSchema={Schema}
@@ -118,20 +120,20 @@ const SignUp = () => {
               <Box>
                 <FormControl sx={{ width: "25ch" }} variant="outlined">
                   <InputLabel htmlFor="outlined-adornment-password">
-                    Name
+                    Username
                   </InputLabel>
                   <OutlinedInput
                     id="outlined-adornment-password"
                     type="text"
-                    name="name"
-                    value={values.name}
+                    name="username"
+                    value={values.username}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    label="Name"
+                    label="Username"
                   />
                 </FormControl>
                 <ErrorMessage
-                  name="name"
+                  name="username"
                   component="div"
                   className="errorMessage"
                 />
@@ -144,48 +146,46 @@ const SignUp = () => {
                   <OutlinedInput
                     id="outlined-adornment-password"
                     type="email"
-                    name="email"
-                    value={values.email}
+                    name="user_email"
+                    value={values.user_email}
                     onBlur={handleBlur}
                     onChange={handleChange}
                     label="Email"
                   />
                 </FormControl>
                 <ErrorMessage
-                  name="email"
+                  name="user_email"
                   component="div"
                   className="errorMessage"
                 />
               </Box>
               <Box>
-                <FormControl sx={{ width: "25ch" }} variant="outlined">
-                  <InputLabel htmlFor="outlined-adornment-password">
-                    Key
+                <FormControl fullWidth>
+                  <InputLabel
+                    id="demo-simple-select-label"
+                    sx={{ color: "#999" }}
+                  >
+                    Role
                   </InputLabel>
-                  <OutlinedInput
-                    // id="outlined-adornment-password"
-                    type={showKey ? "text" : "password"}
-                    name="key"
-                    value={values.key}
-                    onBlur={handleBlur}
+                  <Select
+                    name="user_role"
+                    value={values.user_role}
+                    label="Role"
                     onChange={handleChange}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowKey}
-                          onMouseDown={handleMouseDownKey}
-                          edge="end"
-                        >
-                          {showKey ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label="Key"
-                  />
+                    MenuProps={{
+                      MenuListProps: {
+                        sx: {
+                          backgroundColor: "#fff",
+                        },
+                      },
+                    }}
+                  >
+                    <MenuItem value="user">User</MenuItem>
+                    <MenuItem value="admin">Admin</MenuItem>
+                  </Select>
                 </FormControl>
                 <ErrorMessage
-                  name="key"
+                  name="user_role"
                   component="div"
                   className="errorMessage"
                 />
@@ -193,13 +193,13 @@ const SignUp = () => {
               <Box>
                 <FormControl sx={{ width: "25ch" }} variant="outlined">
                   <InputLabel htmlFor="outlined-adornment-password">
-                    Secret
+                    Password
                   </InputLabel>
                   <OutlinedInput
                     // id="outlined-adornment-password"
                     type={showSecret ? "text" : "password"}
-                    name="secret"
-                    value={values.secret}
+                    name="user_password"
+                    value={values.user_password}
                     onBlur={handleBlur}
                     onChange={handleChange}
                     endAdornment={
@@ -214,11 +214,11 @@ const SignUp = () => {
                         </IconButton>
                       </InputAdornment>
                     }
-                    label="Secret"
+                    label="Password"
                   />
                 </FormControl>
                 <ErrorMessage
-                  name="secret"
+                  name="user_password"
                   component="div"
                   className="errorMessage"
                 />

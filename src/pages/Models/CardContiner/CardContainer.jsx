@@ -9,7 +9,7 @@ const CardContainer = () => {
   return (
     <Grid2 container spacing={3}>
       {models?.map((model) => (
-        <CarCard key={model.id} model={model} />
+        <CarCard key={model?.id} model={model} />
       ))}
     </Grid2>
   );
